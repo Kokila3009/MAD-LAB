@@ -1,0 +1,90 @@
+
+ANDROID MANIFEST FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Wallpaper"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+
+
+
+
+
+package com.example.wallpaper;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.app.WallpaperManager;
+import android.graphics.BitmapFactory;
+import android.view.View;
+import android.widget.Button;
+import java.util.Timer;
+import java.util.TimerTask;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    Button btnChangeWallpaper;
+        boolean running;
+        int[] imagesArray=new int[]{
+
+                R.drawable.img1,
+                R.drawable.img2,
+                R.drawable.img3,
+                R.drawable.img4,
+                R.drawable.img5,
+                R.drawable.img6,
+                R.drawable.img7,
+                R.drawable.img8,
+                R.drawable.img9,
+                R.drawable.img10,
+
+
+        };
+        int i=0; @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btnChangeWallpaper=(Button) findViewById(R.id.btn);
+        btnChangeWallpaper.setOnClickListener(this);
+        }
+    public void onClick(View v)
+    {
+        if(!running)
+        {
+            new Timer().schedule (new MyTimer(),0,300); running=true;
+        }
+    }
+
+    class MyTimer extends TimerTask {
+        public void run() {
+            try {
+                WallpaperManager wallpaperManager = WallpaperManager.getInstance(getBaseContext());
+                if (i == imagesArray.length) i = 0;
+                wallpaperManager.setBitmap(BitmapFactory.decodeResource(getResources(), imagesArray[i]));
+                i++;
+            } catch (Exception e) {
+                // handle exception
+            }
+        }
+    }
+
+}
